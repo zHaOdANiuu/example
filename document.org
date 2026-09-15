@@ -1,0 +1,49 @@
+#+TITLE: 通用操作手册
+#+AUTHOR: 赵大牛
+* Windows 疑难杂症
+** WIN + v 键打不开剪贴板窗口
+
+注册表选项没有开
+
+#+begin_src bat
+reg add "HKLM\SOFTWARE\Microsoft\Clipboard" ^
+/v IsCloudAndHistoryFeatureAvailable ^
+/t REG_DWORD /d 1 /f
+#+end_src
+
+** 删除文件显示有其它文件打开
+
+- WIN + r 输入 *resmon*
+  - 选择 *CPU* 选项卡 并点击关联句柄
+    - 搜索要删除的文件并被所有搜索出来的举报全部杀掉
+
+** 控制面板里面找不到散热选项
+
+Windows Server 版本或某些电源计划下，这个选项会被隐藏
+
+#+begin_src sh
+powercfg -attributes SUB_PROCESSOR 94D3A615-A899-4AC5-AE2B-E4D8F634367F -ATTRIB_HIDE
+#+end_src
+
+* emacs 疑难杂症
+** 编译flag
+
+#+begin_src sh
+../configure --prefix=/usr/local --with-mps --without-sound --without-pop --without-compress-install --with-gnutls --without-dbus
+#+end_src
+
+* msys2 疑难杂症
+** 设置代理
+
+path: /etc/pacman.d
+
+#+begin_src text
+Server = https://mirrors.sjtug.sjtu.edu.cn/msys2/mingw/$repo/
+Server = https://mirrors.sjtug.sjtu.edu.cn/msys2/msys/$arch/
+#+end_src
+
+** 设置home目录
+
+#+begin_src bat
+mklink /D "D:\msys2\home\%USERNAME%" "%USERPROFILE%"
+#+end_src
