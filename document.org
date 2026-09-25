@@ -25,11 +25,32 @@ Windows Server 版本或某些电源计划下，这个选项会被隐藏
 powercfg -attributes SUB_PROCESSOR 94D3A615-A899-4AC5-AE2B-E4D8F634367F -ATTRIB_HIDE
 #+end_src
 
+** 关闭Windows Update服务
+
+gpedit.msc -> 计算机配置 -> 管理模板 -> Windows 组件 -> Windows 更新，
+设置 *配置自动更新* 为禁用
+
+彻底一点, 参考仓库链接: https://github.com/tsgrgo/windows-update-disabler/tree/main
+
+** 缺少 VCRUNTIME-xxx.dll
+
+就是缺少vs相关的.dll而已, 很多软件不会自带, 需要去微软官网下载一个
+链接: https://learn.microsoft.com/zh-cn/cpp/windows/latest-supported-vc-redist?view=msvc-170#latest-supported-redistributable-version
+
+** 文件访问权限
+- 获取文件所有权 =takeown /F "C:\path\to\dir" /R /D Y >nul 2>&1=
+- 设置访问权限是当前用户 =icacls "C:\path\to\dir" /grant "%USERNAME%":F /T /C=
+
 * emacs 疑难杂症
 ** 编译flag
 
 #+begin_src sh
-../configure --prefix=/usr/local --with-mps --without-sound --without-pop --without-compress-install --with-gnutls --without-dbus
+../configure --prefix=/usr/local \
+             --with-mps \
+             --without-sound \
+             --without-pop \
+             --without-compress-install \
+             --with-gnutls --without-dbus
 #+end_src
 
 * msys2 疑难杂症
@@ -41,9 +62,30 @@ path: /etc/pacman.d
 Server = https://mirrors.sjtug.sjtu.edu.cn/msys2/mingw/$repo/
 Server = https://mirrors.sjtug.sjtu.edu.cn/msys2/msys/$arch/
 #+end_src
-
 ** 设置home目录
 
 #+begin_src bat
 mklink /D "D:\msys2\home\%USERNAME%" "%USERPROFILE%"
 #+end_src
+
+* git 疑难杂症
+** 文件被更改了 但是git不显示变动
+
+很有可能是 *ignorecase* 选项的问题, 注意全局配置和当前目录的 *.git* 目录的 *conf* 文件配置.
+勇士很有可能还有很多文件被打上了标记, 需要重新更新git索引.
+
+设置 ignorecase 选项
+#+begin_src sh
+git config --global --unset core.ignoreStat
+git config --local --unset core.ignoreStat
+#+end_src
+
+更新索引
+#+begin_src sh
+git ls-files -v | \
+awk '$1 ~ /^[a-z]/ {print substr($0,3)}' | \
+git update-index --no-assume-unchanged --stdin
+#+end_src
+** 遇到文件冲突了怎么解决
+
+- 如果要保留本地修改使用 =git checkout --ours example.txt=

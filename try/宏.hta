@@ -1,1 +1,47 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"/><meta http-equiv="x-ua-compatible"content="IE=11"/><title>宏</title><script>window.onload=function(){window.resizeTo(260,165);window.moveTo((screen.availWidth-260)/2,(screen.availHeight-165)/2)};</script><style>body{font-family:Arial;font-size:12px;margin:10px}input{width:100px;height:20px;font-size:15px}button{width:100px;height:30px}</style></head><body><label for="keyBox"style="position: absolute; left: 20px; top: 10px">快捷键</label><input type="text"id="keyBox"style="position: absolute; left: 130px; top: 10px"/><label for="loopBox"style="position: absolute; left: 20px; top: 40px">循环次数</label><input type="text"id="loopBox"value="1"style="position: absolute; left: 130px; top: 40px"/><button onclick="run()"style="position: absolute; left: 20px; top: 75px">运行</button><button onclick="help()"style="position: absolute; left: 130px; top: 75px">帮助</button></body><script>var keyBox=document.querySelector("#keyBox");var loopBox=document.querySelector("#loopBox");var wShell=new ActiveXObject("WScript.Shell");function run(){wShell.SendKeys("% n");var key=keyBox.value;var loop=+loopBox.value;for(var i=0;i<loop;++i)setTimeout(function(){wShell.SendKeys(key)})}function help(){alert("Ctrl用 ^ 表示\nAlt 用 % 表示\nShift 用 + 表示\n退格 用 {BS} 表示\ndel键 用 {DEL} 表示\n回车 用 {ENTER} 表示\n剩余参考vbs")}</script></html>
+<!DOCTYPE html>
+<html>
+  <head>
+	  <meta charset="UTF-8" />
+	  <meta http-equiv="x-ua-compatible" content="IE=11" />
+	  <title>宏</title>
+
+	  <script>
+		 window.onload = function() {
+			 window.resizeTo(260,165);
+			 window.moveTo((screen.availWidth-260)/2,(screen.availHeight-165)/2)
+     };
+	  </script>
+
+	  <style>
+		 body { font-family: Arial; font-size: 12px; margin:10px }
+		 input { width: 100px; height: 20px; font-size: 15px }
+		 button { width: 100px; height: 30px }
+	  </style>
+  </head>
+
+  <body>
+	  <label for="keyBox" style="position: absolute; left: 20px; top: 10px">快捷键</label>
+	  <input type="text" id="keyBox" style="position: absolute; left: 130px; top: 10px" />
+	  <label for="loopBox" style="position: absolute; left: 20px; top: 40px">循环次数</label>
+	  <input type="text" id="loopBox" value="1" style="position: absolute; left: 130px; top: 40px" />
+	  <button onclick="run()" style="position: absolute; left: 20px; top: 75px">运行</button>
+	  <button onclick="help()" style="position: absolute; left: 130px; top: 75px">帮助</button>
+
+    <script>
+	   var keyBox = document.querySelector("#keyBox");
+	   var loopBox = document.querySelector("#loopBox");
+	   var wShell = new ActiveXObject("WScript.Shell");
+
+	   function run() {
+	     wShell.SendKeys("% n");
+       var key = keyBox.value;
+       var loop = +loopBox.value;
+	     for (var i = 0;i < loop; ++i) setTimeout(function () { wShell.SendKeys(key) })
+	   }
+
+	   function help() {
+       alert("Ctrl用 ^ 表示\nAlt 用 % 表示\nShift 用 + 表示\n退格 用 {BS} 表示\ndel键 用 {DEL} 表示\n回车 用 {ENTER} 表示\n剩余参考vbs")
+     }
+    </script>
+  </body>
+</html>

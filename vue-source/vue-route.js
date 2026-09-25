@@ -1,30 +1,17 @@
-let globalCurUri = null;
-const globalRoutes = {};
+const _globalRoutes = {};
 
-const parseHash = () => {
-  const hash = window.location.hash.slice(1) || '/';
-  const [path, queryString] = hash.split('?');
-  const args = {};
-  if (queryString) {
-    queryString.split('&').forEach(pair => {
-      const [key, value] = pair.split('=');
-      args[key] = value ? decodeURIComponent(value) : true;
-    });
+const addRoute = (k, v) => { _globalRoutes[k] = v };
+
+const handleRoute = async () => {
+  updateCurUri();
+  const uri = getCurUri();
+  const html = globalRoutes[uri.path];
+  if (!html) {
+    document.body.innerHTML = '<h1>404</h1>';
+    return;
   }
-  return {
-    path,
-    args,
-    hash,
-    queryString
-  };
+  readHTML(await html(uri), uri.path);
 };
 
-const addRoute = (k, v) => {
-  globalRoutes[k] = v;
-};
-
-const getCurUri = () => globalCurUri;
-
-const updateCurUri = () => {
-  globalCurUri = parseHash();
-};
+window.addEventListener('hashchange', handleRoute);
+window.addEventListener('load', handleRoute);
