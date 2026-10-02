@@ -38,6 +38,7 @@ gpedit.msc -> 计算机配置 -> 管理模板 -> Windows 组件 -> Windows 更�
 链接: https://learn.microsoft.com/zh-cn/cpp/windows/latest-supported-vc-redist?view=msvc-170#latest-supported-redistributable-version
 
 ** 文件访问权限
+
 - 获取文件所有权 =takeown /F "C:\path\to\dir" /R /D Y >nul 2>&1=
 - 设置访问权限是当前用户 =icacls "C:\path\to\dir" /grant "%USERNAME%":F /T /C=
 
